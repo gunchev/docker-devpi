@@ -1,6 +1,6 @@
 #
-FROM python:3.9.1
-# LABEL maintainer="https://github.com/muccg/"
+FROM docker.io/library/fedora:latest
+LABEL maintainer="https://github.com/mr700/"
 
 ARG ARG_DEVPI_SERVER_VERSION=5.5.0
 ARG ARG_DEVPI_WEB_VERSION=4.0.5
@@ -15,15 +15,14 @@ ENV PIP_TRUSTED_HOST="127.0.0.1"
 ENV VIRTUAL_ENV /env
 
 # devpi user
-RUN addgroup --system --gid 1000 devpi \
-    && adduser --disabled-password --system --uid 1000 --home /data --shell /sbin/nologin --gid 1000 devpi
+RUN groupadd --system --gid 1000 devpi \
+    && adduser --system --uid 1000 --home /data --shell /sbin/nologin --gid 1000 devpi
 
 # create a virtual env in $VIRTUAL_ENV, ensure it respects pip version
-RUN pip install virtualenv \
-    && virtualenv $VIRTUAL_ENV \
-    && $VIRTUAL_ENV/bin/pip install pip==$PYTHON_PIP_VERSION
+RUN dnf install -y virtualenv pip && virtualenv $VIRTUAL_ENV
 ENV PATH $VIRTUAL_ENV/bin:$PATH
 
+RUN pip install --upgrade pip
 RUN pip install \
     "devpi-client==${DEVPI_CLIENT_VERSION}" \
     "devpi-web==${DEVPI_WEB_VERSION}" \
