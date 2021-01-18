@@ -40,11 +40,44 @@ in your dockerfiles. This will add the devpi container an optional cache for
 pip. The docker containers will try using port 3141 on the docker host first
 and fall back on the normal pypi servers without breaking the build.
 
+For Debian/Ubuntu/deb based images
 ```Dockerfile
-# Install netcat for ip route
+# Install iproute2
 RUN apt-get update \
- && apt-get install -y netcat \
+ && apt-get install -y iproute2 \
  && rm -rf /var/lib/apt/lists/*
+
+ # Use an optional pip cache to speed development
+RUN export HOST_IP=$(ip route| awk '/^default/ {print $3}') \
+ && mkdir -p ~/.pip \
+ && echo [global] >> ~/.pip/pip.conf \
+ && echo extra-index-url = http://$HOST_IP:3141/app/dev/+simple >> ~/.pip/pip.conf \
+ && echo [install] >> ~/.pip/pip.conf \
+ && echo trusted-host = $HOST_IP >> ~/.pip/pip.conf \
+ && cat ~/.pip/pip.conf
+```
+
+For new Fedora/Redhat/rpm+dnf based images
+```Dockerfile
+# Install iproute
+RUN dnf install iproute \
+ && dnf clean all
+
+ # Use an optional pip cache to speed development
+RUN export HOST_IP=$(ip route| awk '/^default/ {print $3}') \
+ && mkdir -p ~/.pip \
+ && echo [global] >> ~/.pip/pip.conf \
+ && echo extra-index-url = http://$HOST_IP:3141/app/dev/+simple >> ~/.pip/pip.conf \
+ && echo [install] >> ~/.pip/pip.conf \
+ && echo trusted-host = $HOST_IP >> ~/.pip/pip.conf \
+ && cat ~/.pip/pip.conf
+```
+
+For old Fedora/Redhat/rpm+yum based images
+```Dockerfile
+# Install iproute
+RUN yum install iproute \
+ && yum clean all
 
  # Use an optional pip cache to speed development
 RUN export HOST_IP=$(ip route| awk '/^default/ {print $3}') \
