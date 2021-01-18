@@ -28,8 +28,7 @@ docker run -d --name devpi \
 ```
 
 *Alternatively, you can use the sample [docker-compose.yml](docker-compose.yml)
-file to start the container using [Docker
-Compose](https://docs.docker.com/compose/)*
+file to start the container using [Docker Compose](https://docs.docker.com/compose/)*
 
 Please set ``DEVPI_PASSWORD`` to a secret otherwise an attacker can *execute
 arbitrary code*.
@@ -89,3 +88,15 @@ Devpi creates a user named root by default, its password should be set with
 
 For additional security the argument `--restrict-modify root` has been added so
 only the root may create users and indexes.
+
+# History
+
+This is a fork the [Centre for Comparative Genomics, Murdoch
+University](https://github.com/muccg)'s [docker-devpi](https://github.com/muccg/docker-devpi)
+repository, which was last updated 2018-05-24 (2.5 years ago). I needed something
+fresher so I forked it.
+
+I managed to get the image size down to 29% of the original size. Initially
+it used the python:3.9.1 image and resulted in 994 MB image. Switching to
+fedora:latest resulted in 493 MB. Adding ``dnf clean all`` the image is
+now down to 282 MB (or ~ 90 MB compressed).
