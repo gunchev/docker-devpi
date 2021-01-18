@@ -2,7 +2,7 @@ version: '2'
 services:
 
   devpi:
-      image: muccg/devpi:latest
+      image: mr700/devpi:latest
     volumes:
       - ./data:/data
     ports:
