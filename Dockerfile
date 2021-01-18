@@ -19,11 +19,14 @@ RUN groupadd --system --gid 1000 devpi \
     && adduser --system --uid 1000 --home /data --shell /sbin/nologin --gid 1000 devpi
 
 # create a virtual env in $VIRTUAL_ENV, ensure it respects pip version
-RUN dnf install -y virtualenv pip && virtualenv $VIRTUAL_ENV
+RUN dnf install -y virtualenv pip \
+    && dnf clean all \
+    && virtualenv $VIRTUAL_ENV
+
 ENV PATH $VIRTUAL_ENV/bin:$PATH
 
-RUN pip install --upgrade pip
-RUN pip install \
+RUN pip install --upgrade pip \
+    && pip install \
     "devpi-client==${DEVPI_CLIENT_VERSION}" \
     "devpi-web==${DEVPI_WEB_VERSION}" \
     "devpi-server==${DEVPI_SERVER_VERSION}"
