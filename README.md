@@ -89,6 +89,12 @@ RUN export HOST_IP=$(ip route| awk '/^default/ {print $3}') \
  && cat ~/.pip/pip.conf
 ```
 
+The default IP can be found using python too:
+```bash
+python2 -c 'import socket; sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM); \
+    sock.connect(("8.8.8.8", 1)); print(sock.getsockname()[0])'
+```
+
 ## Uploading python packages files
 
 You need to upload your python requirement to get any benefit from the devpi
