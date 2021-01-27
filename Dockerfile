@@ -58,7 +58,7 @@ RUN apk add --update --no-cache python3 \
         "devpi-client==${DEVPI_CLIENT_VERSION}" \
         "devpi-web==${DEVPI_WEB_VERSION}" \
         "devpi-server==${DEVPI_SERVER_VERSION}" \
-    && rm -rf /srv/* /root/.cache
+    && rm -rf /srv/* /root/.cache /var/cache/apk/*
 
 EXPOSE 3141
 VOLUME /data

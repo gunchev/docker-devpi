@@ -140,6 +140,7 @@ it used the python:3.9.1 image and resulted in 994 MB image. Switching to
 fedora:latest resulted in 493 MB. Adding ``dnf clean all`` the image is
 now down to 282 MB (or ~ 90 MB compressed).
 
-Building with alpine linux got the image down to 135 MB, 7.3 times...
-This was a good excercise - building in one container with gcc, copying the
-compiled files and installing them in another container without gcc... cool.
+Building with alpine linux got the image down to 135 MB, 7.3 times smaller.
+The compressed image is 54.45 MB. This was a good excercise - building in
+one container with gcc, copying the compiled files and install them in another
+container without gcc... cool. Also removed 1.9 MB of APKINDEX gz caches.
