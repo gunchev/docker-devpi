@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 function defaults {
     : ${DEVPISERVER_SERVERDIR="/data/server"}
