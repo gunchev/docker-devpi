@@ -63,7 +63,7 @@ RUN apk add --update --no-cache python3 \
 EXPOSE 3141
 VOLUME /data
 
-COPY docker-entrypoint.sh-alpine /docker-entrypoint.sh
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 USER devpi
