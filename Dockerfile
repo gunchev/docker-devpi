@@ -1,8 +1,8 @@
 FROM docker.io/library/alpine:latest AS build
 
-ARG ARG_DEVPI_SERVER_VERSION=5.5.0
-ARG ARG_DEVPI_WEB_VERSION=4.0.5
-ARG ARG_DEVPI_CLIENT_VERSION=5.2.1
+ARG ARG_DEVPI_SERVER_VERSION=6.2.0
+ARG ARG_DEVPI_WEB_VERSION=4.0.8
+ARG ARG_DEVPI_CLIENT_VERSION=5.2.2
 
 ENV DEVPI_SERVER_VERSION $ARG_DEVPI_SERVER_VERSION
 ENV DEVPI_WEB_VERSION $ARG_DEVPI_WEB_VERSION
@@ -53,7 +53,7 @@ RUN apk add --update --no-cache python3 \
     && ln -sf python3 /usr/bin/python \
     && python3 -m ensurepip \
     && ln -sf /usr/bin/pip3 /usr/bin/pip \
-    && pip3 install --upgrade pip setuptools wheel pydf \
+    && pip3 install --upgrade pip setuptools wheel pydf ruamel.yaml 'pyramid<2' \
     && pip install /srv/*.whl \
         "devpi-client==${DEVPI_CLIENT_VERSION}" \
         "devpi-web==${DEVPI_WEB_VERSION}" \
