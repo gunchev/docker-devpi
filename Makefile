@@ -7,6 +7,7 @@ help:
 	@echo  "    help:               the default, this help message"
 	@echo  "    build:              build the container"
 	@echo  "    run:                run the latest container"
+	@echo  "    shell:              run a root shell in the running container"
 	@echo  "    stop:               stop the running container"
 	@echo  "    push:               push the image to dockerhub"
 .PHONY: help
