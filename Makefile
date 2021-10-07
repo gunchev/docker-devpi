@@ -12,7 +12,7 @@ help:
 .PHONY: help
 
 
-V:=$(shell git describe|cut -c 2-)
+V:=$(shell git describe --tags --dirty --always --long --match='v[0-9]*.[0-9]*' | sed 's/^v\([0-9.]*\)-.*/\1/')
 
 
 build:
