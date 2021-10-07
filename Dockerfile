@@ -1,5 +1,6 @@
 FROM docker.io/library/alpine:latest AS build
 
+# NB: Update these *AND* the ones below, no idea how to auto keep in sync
 ARG ARG_DEVPI_SERVER_VERSION=6.2.0
 ARG ARG_DEVPI_WEB_VERSION=4.0.8
 ARG ARG_DEVPI_CLIENT_VERSION=5.2.2
@@ -19,7 +20,7 @@ RUN apk add --update --no-cache python3 build-base python3-dev libffi-dev \
     && ln -sf /usr/bin/pip3 /usr/bin/pip \
     && pip3 install --upgrade pip setuptools wheel
 
-RUN pip --cache-dir=/root/.cache install \
+RUN pip --cache-dir=/root/.cache install ruamel.yaml ruamel.yaml.clib \
     "devpi-client==${DEVPI_CLIENT_VERSION}" \
     "devpi-web==${DEVPI_WEB_VERSION}" \
     "devpi-server==${DEVPI_SERVER_VERSION}"
@@ -32,9 +33,10 @@ RUN /mv_to_srv
 
 FROM docker.io/library/alpine:latest
 
-ARG ARG_DEVPI_SERVER_VERSION=5.5.0
-ARG ARG_DEVPI_WEB_VERSION=4.0.5
-ARG ARG_DEVPI_CLIENT_VERSION=5.2.1
+# NB: Update these *AND* the ones above, no idea how to auto keep in sync
+ARG ARG_DEVPI_SERVER_VERSION=6.2.0
+ARG ARG_DEVPI_WEB_VERSION=4.0.8
+ARG ARG_DEVPI_CLIENT_VERSION=5.2.2
 
 ENV DEVPI_SERVER_VERSION $ARG_DEVPI_SERVER_VERSION
 ENV DEVPI_WEB_VERSION $ARG_DEVPI_WEB_VERSION
@@ -53,7 +55,7 @@ RUN apk add --update --no-cache python3 \
     && ln -sf python3 /usr/bin/python \
     && python3 -m ensurepip \
     && ln -sf /usr/bin/pip3 /usr/bin/pip \
-    && pip3 install --upgrade pip setuptools wheel pydf ruamel.yaml 'pyramid<2' \
+    && pip3 install --upgrade pip setuptools wheel pydf \
     && pip install /srv/*.whl \
         "devpi-client==${DEVPI_CLIENT_VERSION}" \
         "devpi-web==${DEVPI_WEB_VERSION}" \
