@@ -12,7 +12,7 @@ help:
 	@echo  "    shell:              run a root shell in the running container"
 	@echo  "    stop:               stop the running container"
 	@echo  "    push:               push the Alpine Linux based image to dockerhub"
-	@echo  "    push:               push the Fedora Linux based image to dockerhub"
+	@echo  "    push_fedora:        push the Fedora Linux based image to dockerhub"
 .PHONY: help
 
 
