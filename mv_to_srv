@@ -1,5 +1,0 @@
-#!/bin/sh
-
-for i in $(find /root/.cache/ -type f); do
-  mv "$i" /srv/
-done

@@ -8,13 +8,15 @@ builds. This is done by adding an optional cache of your requirement python
 packages and speed up docker. The outcome is faster development without
 breaking builds.
 
-# Getting started
+## Getting started
 
-## Installation
+### Installation
 
-`docker pull dgunchev/devpi`
+```bash
+docker pull dgunchev/devpi
+```
 
-## Quickstart
+### Quickstart
 
 Start using
 
@@ -33,14 +35,15 @@ file to start the container using [Docker Compose](https://docs.docker.com/compo
 Please set ``DEVPI_PASSWORD`` to a secret otherwise an attacker can *execute
 arbitrary code*.
 
-## Client side usage
+### Client side usage
 
 To use this devpi cache to speed up your dockerfile builds, add the code below
 in your dockerfiles. This will add the devpi container an optional cache for
 pip. The docker containers will try using port 3141 on the docker host first
 and fall back on the normal pypi servers without breaking the build.
 
-For Debian/Ubuntu/deb based images
+#### For Debian/Ubuntu/deb based images
+
 ```Dockerfile
 # Install iproute2
 RUN apt-get update \
@@ -57,7 +60,8 @@ RUN export HOST_IP=$(ip route| awk '/^default/ {print $3}') \
  && cat ~/.pip/pip.conf
 ```
 
-For new Fedora/Redhat/rpm+dnf based images
+#### For new Fedora/Redhat/rpm+dnf based images
+
 ```Dockerfile
 # Install iproute
 RUN dnf install iproute \
@@ -73,7 +77,8 @@ RUN export HOST_IP=$(ip route| awk '/^default/ {print $3}') \
  && cat ~/.pip/pip.conf
 ```
 
-For old Fedora/Redhat/rpm+yum based images
+#### For old Fedora/Redhat/rpm+yum based images
+
 ```Dockerfile
 # Install iproute
 RUN yum install iproute \
@@ -89,13 +94,14 @@ RUN export HOST_IP=$(ip route| awk '/^default/ {print $3}') \
  && cat ~/.pip/pip.conf
 ```
 
-The default IP can be found using python too:
+### The default IP can be found using python too:
+
 ```bash
-python2 -c 'import socket; sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM); \
+python3 -c 'import socket; sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM); \
     sock.connect(("8.8.8.8", 1)); print(sock.getsockname()[0])'
 ```
 
-## Uploading python packages files
+### Uploading python packages files
 
 You need to upload your python requirement to get any benefit from the devpi
 container. You can upload them using the bash code below a similar build
@@ -114,33 +120,34 @@ else \
 fi
 ```
 
-# Persistence
+## Persistence
 
-For devpi to preserve its state across container shutdown and startup you
+For devpi to preserve its state across container shutdown and startup, you
 should mount a volume at `/data`. The quickstart command already includes this.
 
-# Security
+## Security
 
-Devpi creates a user named root by default, its password should be set with
-``DEVPI_PASSWORD`` environment variable. Please set it, otherwise attackers can
-*execute arbitrary code* in your application by uploading modified packages.
+Devpi creates a user named root by default.
+Its password should be set with the `DEVPI_PASSWORD` environment variable.
+Please set it, otherwise attackers can *execute arbitrary code* in your application
+by uploading modified packages.
 
-For additional security the argument `--restrict-modify root` has been added so
+For additional security the argument `--restrict-modify root` has been added, so
 only the root may create users and indexes.
 
-# History
+## History
 
 This is a fork the [Centre for Comparative Genomics, Murdoch
 University](https://github.com/muccg)'s [docker-devpi](https://github.com/muccg/docker-devpi)
-repository, which was last updated 2018-05-24 (2.5 years ago). I needed something
-fresher so I forked it.
+repository, which was last updated in 2018-05-24 (2.5 years old at the time).
+I needed something fresher so I forked it.
 
 I managed to get the image size down to 29% of the original size. Initially
 it used the python:3.9.1 image and resulted in 994 MB image. Switching to
-fedora:latest resulted in 493 MB. Adding ``dnf clean all`` the image is
+fedora:latest resulted in 493 MB. Adding `dnf clean all` the image is
 now down to 282 MB (or ~ 90 MB compressed).
 
 Building with alpine linux got the image down to 135 MB, 7.3 times smaller.
-The compressed image is 54.45 MB. This was a good excercise - building in
-one container with gcc, copying the compiled files and install them in another
-container without gcc... cool. Also removed 1.9 MB of APKINDEX gz caches.
+The compressed image is 54.45 MB. This was a good exercise - building in
+one container with gcc, copying the compiled files and installing them in another
+container without gcc... cool. Also removed 1.9 MB of `APKINDEX` gzip caches.

@@ -1,18 +1,18 @@
 #!/bin/sh
 
-function defaults {
-    : ${DEVPISERVER_SERVERDIR="/data/server"}
-    : ${DEVPI_CLIENTDIR="/data/client"}
-    : ${DEVPISERVER_SECRET="$DEVPISERVER_SERVERDIR/.secret.txt"}
+defaults() {
+    : "${DEVPISERVER_SERVERDIR=/data/server}"
+    : "${DEVPI_CLIENTDIR=/data/client}"
+    : "${DEVPISERVER_SECRET=$DEVPISERVER_SERVERDIR/.secret.txt}"
+
+    export DEVPISERVER_SERVERDIR DEVPI_CLIENTDIR DEVPISERVER_SECRET
 
     echo "DEVPISERVER_SERVERDIR is ${DEVPISERVER_SERVERDIR}"
     echo "DEVPI_CLIENTDIR is ${DEVPI_CLIENTDIR}"
     echo "DEVPISERVER_SECRET is ${DEVPISERVER_SECRET}"
-
-    export DEVPISERVER_SERVERDIR DEVPI_CLIENTDIR DEVPISERVER_SECRET
 }
 
-function initialise_devpi {
+initialise_devpi() {
     # devpi-gen-config
     echo "=== Initialise devpi-server ==="
     devpi-init --role=standalone --serverdir=/data/server --storage=sqlite --keyfs-cache-size=64000 --root-passwd="${DEVPI_PASSWORD}"
@@ -26,7 +26,7 @@ function initialise_devpi {
 
 defaults
 
-if [ "$1" = 'devpi' ] && [ $# == 1 ]; then
+if [ "$1" = 'devpi' ] && [ $# -eq 1 ]; then
     # First run initialization
     if [ ! -f  "${DEVPISERVER_SERVERDIR}/.serverversion" ]; then
         echo "=== Initializing devpi-server ==="

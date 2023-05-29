@@ -25,10 +25,7 @@ RUN pip --cache-dir=/root/.cache install ruamel.yaml ruamel.yaml.clib \
     "devpi-web==${DEVPI_WEB_VERSION}" \
     "devpi-server==${DEVPI_SERVER_VERSION}"
 
-COPY mv_to_srv /mv_to_srv
-
-RUN /mv_to_srv
-
+RUN find /root/.cache/ -type f -print0 | xargs -0 mv -t /srv/
 
 
 FROM docker.io/library/alpine:latest
