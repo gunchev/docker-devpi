@@ -1,0 +1,12 @@
+version: '2'
+services:
+
+  devpi:
+    image: "gunchev/devpi:latest"
+    volumes:
+      - "./data:/data"
+    ports:
+      - "3141:3141"
+    environment:
+      - DEVPI_P4SSW0RD=PLE4SE_PUT_G00D_PASSWORD_HERE
+    restart: always

@@ -10,16 +10,16 @@ services:
         ARG_DEVPI_SERVER_VERSION: ${DOCKER_DEVPI_SERVER_VERSION}
         ARG_DEVPI_WEB_VERSION: ${DOCKER_DEVPI_WEB_VERSION}
         ARG_DEVPI_CLIENT_VERSION: ${DOCKER_DEVPI_CLIENT_VERSION}
-    image: mr700/devpi:${GIT_BRANCH}
+    image: gunchev/devpi:${GIT_BRANCH}
 
   prod:
     extends:
       file: docker-compose-build.yml
       service: dev
-    image: mr700/devpi:${DOCKER_DEVPI_SERVER_VERSION}
+    image: gunchev/devpi:${DOCKER_DEVPI_SERVER_VERSION}
 
   latest:
     extends:
       file: docker-compose-build.yml
       service: dev
-    image: mr700/devpi:latest
+    image: gunchev/devpi:latest
