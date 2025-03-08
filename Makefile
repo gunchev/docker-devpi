@@ -1,7 +1,8 @@
-ARG_DEVPI_SERVER_VERSION:=6.9.0
-ARG_DEVPI_WEB_VERSION:=4.2.0
-ARG_DEVPI_CLIENT_VERSION:=6.0.4
+include .env
+export $(shell sed 's/=.*//' .env)
+
 V:=$(shell git describe --tags --dirty --always --long --match='v[0-9]*.[0-9]*' | sed 's/^v\([0-9.]*\)-.*/\1/')
+
 
 help:
 	@echo
@@ -22,12 +23,12 @@ help:
 
 
 build:
-	podman build --tag devpi:latest --tag devpi:$(V) . -f Dockerfile --build-arg ARG_DEVPI_SERVER_VERSION=$(ARG_DEVPI_SERVER_VERSION) --build-arg ARG_DEVPI_WEB_VERSION=$(ARG_DEVPI_WEB_VERSION) --build-arg ARG_DEVPI_CLIENT_VERSION=$(ARG_DEVPI_CLIENT_VERSION)
+	podman build --tag devpi:latest --tag devpi:$(V) . -f Dockerfile --build-arg ARG_DEVPI_SERVER_VERSION=$(DEVPI_SERVER_VERSION) --build-arg ARG_DEVPI_WEB_VERSION=$(DEVPI_WEB_VERSION) --build-arg ARG_DEVPI_CLIENT_VERSION=$(DEVPI_CLIENT_VERSION)
 .PHONY: build
 
 
 build_fedora:
-	podman build --tag devpi:latest-fedora --tag devpi:$(V)-fedora . -f Dockerfile.fedora --build-arg ARG_DEVPI_SERVER_VERSION=$(ARG_DEVPI_SERVER_VERSION) --build-arg ARG_DEVPI_WEB_VERSION=$(ARG_DEVPI_WEB_VERSION) --build-arg ARG_DEVPI_CLIENT_VERSION=$(ARG_DEVPI_CLIENT_VERSION)
+	podman build --tag devpi:latest-fedora --tag devpi:$(V)-fedora . -f Dockerfile.fedora --build-arg ARG_DEVPI_SERVER_VERSION=$(DEVPI_SERVER_VERSION) --build-arg ARG_DEVPI_WEB_VERSION=$(DEVPI_WEB_VERSION) --build-arg ARG_DEVPI_CLIENT_VERSION=$(DEVPI_CLIENT_VERSION)
 .PHONY: build
 
 
